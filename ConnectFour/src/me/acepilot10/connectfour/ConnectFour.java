@@ -49,6 +49,9 @@ public class ConnectFour {
 				dropPiece(topCell);
 			}
 		}
+		else {
+			return;
+		}
 		checkIfPlayerWon();
 	}
 
