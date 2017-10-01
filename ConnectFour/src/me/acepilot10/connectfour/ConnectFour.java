@@ -2,6 +2,8 @@ package me.acepilot10.connectfour;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.acepilot10.connectfour.CellPanel.Piece;
 
@@ -48,8 +50,7 @@ public class ConnectFour {
 			} else {
 				dropPiece(topCell);
 			}
-		}
-		else {
+		} else {
 			return;
 		}
 		checkIfPlayerWon();
@@ -67,46 +68,44 @@ public class ConnectFour {
 	}
 
 	public void checkIfPlayerWon() {
-		if(playing) {
+		if (playing) {
 			checkVertical();
 			checkHorizontal();
-			checkDiagonal();			
+			checkDiagonal();
 			switchPlayer();
 		}
 	}
 
 	private void checkVertical() {
-		for(int row = 5; row >= 3; row--) {
-			for(int column = 0; column <= 6; column++) {
+		for (int row = 5; row >= 3; row--) {
+			for (int column = 0; column <= 6; column++) {
 				CellPanel cell = frame.getConnectFourPanel().getPanel(column, row);
-				if(!cell.isEmpty()) {
+				if (!cell.isEmpty()) {
 					int piece = cell.piece;
 					ArrayList<CellPanel> panels = new ArrayList<CellPanel>();
 					panels.add(cell);
 					int rowTo = row - 3;
-					for(int i = 1; i <= 3; i++) {
+					for (int i = 1; i <= 3; i++) {
 						CellPanel currentCell = frame.getConnectFourPanel().getPanel(column, row - i);
-						if(currentCell != null) {
+						if (currentCell != null) {
 							panels.add(currentCell);
-							if(currentCell.piece == piece) {
-								if((row-i) == rowTo) {
-									//Win
-									System.out.println("Won vertical");
+							if (currentCell.piece == piece) {
+								if ((row - i) == rowTo) {
+									// Win
+									//System.out.println("Won vertical");
 									win(panels);
 									break;
 								}
-							}
-							else
+							} else
 								break;
-						}
-						else 
+						} else
 							break;
 					}
 				}
 			}
 		}
 	}
-	
+
 	private void checkHorizontal() {
 		for (int col = 0; col <= 6; col++) {
 			for (int row = 0; row <= 5; row++) {
@@ -122,12 +121,11 @@ public class ConnectFour {
 								panels.add(currentCell);
 								if (i == 3) {
 									// win
-									System.out.println("Win horizontal");
+									//System.out.println("Win horizontal");
 									win(panels);
 									break;
 								}
-							}
-							else
+							} else
 								break;
 						} else
 							break;
@@ -153,12 +151,11 @@ public class ConnectFour {
 							if (currentCell.piece == piece) {
 								panels.add(currentCell);
 								if (i == 3) {
-									System.out.println("Won right diagonal");
+									//System.out.println("Won right diagonal");
 									win(panels);
 									break;
 								}
-							}
-							else
+							} else
 								break;
 						} else
 							break;
@@ -171,12 +168,11 @@ public class ConnectFour {
 							if (currentCell.piece == piece) {
 								panels.add(currentCell);
 								if (i == 3) {
-									System.out.println("Won left diagonal");
+									//System.out.println("Won left diagonal");
 									win(panels);
 									break;
 								}
-							}
-							else 
+							} else
 								break;
 						} else
 							break;
@@ -185,19 +181,44 @@ public class ConnectFour {
 			}
 		}
 	}
-	
+
 	private void win(ArrayList<CellPanel> panels) {
 		playing = false;
-		for(CellPanel panel : panels) {
-			panel.setBackground(Color.YELLOW);
-		}
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask() {
+			boolean color = false;
+			public void run() {
+				for (CellPanel panel : panels) {
+					if (color) {
+						panel.setBackground(Color.YELLOW);
+					} else {
+						switch (currentPlayer) {
+						case 1:
+							panel.setBackground(Color.RED);
+							break;
+						case 2:
+							panel.setBackground(Color.BLACK);
+							break;
+						}
+					}
+				}
+				color = !color;
+			}
+		}, 0, 20*5);
+
 		frame.getScoreboard().setBackground(Color.YELLOW);
 		frame.getScoreboard().getLabel().setText("Player " + currentPlayer + " has won!");
+		frame.getScoreboard().togglePlayAgainButton();
+		//System.out.println("Player has won!");
 	}
-	
+
 	private void switchPlayer() {
-		if(currentPlayer == 1) currentPlayer = 2;
-		else currentPlayer = 1;
-		frame.getScoreboard().update();
+		if(playing) {
+			if (currentPlayer == 1)
+				currentPlayer = 2;
+			else
+				currentPlayer = 1;
+			frame.getScoreboard().update();
+		}
 	}
 }

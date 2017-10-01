@@ -2,10 +2,14 @@ package me.acepilot10.connectfour.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import me.acepilot10.connectfour.ConnectFour;
 import me.acepilot10.connectfour.ConnectFourFrame;
 import me.acepilot10.connectfour.Settings;
 
@@ -14,6 +18,7 @@ public class ScoreboardPanel extends JPanel {
 	public ConnectFourFrame frame;
 	
 	private JLabel currentPlayer;
+	private JButton playAgainButton;
 	
 	public ScoreboardPanel(ConnectFourFrame frame) {
 		this.frame = frame;
@@ -34,6 +39,17 @@ public class ScoreboardPanel extends JPanel {
 		currentPlayer.setFont(new Font("Serif", Font.PLAIN, Settings.SCOREBOARD_FONT_SIZE));
 		add(currentPlayer);
 		setVisible(true);
+		
+		playAgainButton = new JButton("Play Again");
+		playAgainButton.setLocation(Settings.WIDTH/2 - playAgainButton.getWidth()/2, 25);
+		playAgainButton.setEnabled(false);
+		playAgainButton.setVisible(false);
+		playAgainButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				playAgainClicked();
+			}
+		});
+		add(playAgainButton);
 	}
 	
 	public void update() {
@@ -49,7 +65,18 @@ public class ScoreboardPanel extends JPanel {
 		}
 	}
 	
+	private void playAgainClicked() {
+		new ConnectFour();
+		frame.dispose();
+	}
+	
 	public JLabel getLabel() {
 		return this.currentPlayer;
+	}
+	
+	public void togglePlayAgainButton() {
+		boolean toggled = playAgainButton.isEnabled();
+		playAgainButton.setEnabled(!toggled); 
+		playAgainButton.setVisible(!toggled);
 	}
 }
