@@ -6,13 +6,13 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 public class ConnectFourPanel extends JPanel {
-	
-	private CellPanel[][] panels; 
-	
+
+	private CellPanel[][] panels;
+
 	public ConnectFourPanel() {
 		init();
 	}
-	
+
 	private void init() {
 		panels = new CellPanel[42][42];
 		GridLayout layout = new GridLayout();
@@ -29,26 +29,31 @@ public class ConnectFourPanel extends JPanel {
 		int y = (Settings.HEIGHT / 2) - (getHeight() / 2);
 		setLocation(x, y);
 		setVisible(true);
-		setBackground(Color.GRAY);
+		setBackground(Color.YELLOW);
 		addCells();
 	}
-	
+
 	private void addCells() {
 		int currentColumn = 0;
 		int currentRow = 5;
-		for(int i = 0; i <= 41; i++) {	
+		for (int i = 0; i <= 41; i++) {
 			CellPanel cell = new CellPanel(currentColumn, currentRow);
 			add(cell);
 			panels[currentColumn + 1][currentRow + 1] = cell;
 			currentColumn++;
-			if(currentColumn == 7 ) {
+			if (currentColumn == 7) {
 				currentColumn = 0;
 				currentRow--;
 			}
 		}
 	}
-	
+
 	public CellPanel getPanel(int column, int row) {
-		return panels[column+1][row+1];
+		try {
+			return panels[column + 1][row + 1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Attempted to find cell which doesn't exist. Returning null.");
+		}
+		return null;
 	}
 }

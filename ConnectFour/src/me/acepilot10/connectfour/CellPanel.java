@@ -1,6 +1,7 @@
 package me.acepilot10.connectfour;
 
 import java.awt.Color;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -50,6 +51,10 @@ public class CellPanel extends JPanel {
 	
 	public int getRow() {
 		return this.row;
+	}
+	
+	public Point getLocation() {
+		return new Point(column, row);
 	}
 	
 	public class Piece {

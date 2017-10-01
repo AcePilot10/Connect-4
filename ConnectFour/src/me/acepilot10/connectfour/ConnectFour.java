@@ -92,7 +92,7 @@ public class ConnectFour {
 							if (currentCell.piece == piece) {
 								if ((row - i) == rowTo) {
 									// Win
-									//System.out.println("Won vertical");
+									// System.out.println("Won vertical");
 									win(panels);
 									break;
 								}
@@ -121,7 +121,7 @@ public class ConnectFour {
 								panels.add(currentCell);
 								if (i == 3) {
 									// win
-									//System.out.println("Win horizontal");
+									// System.out.println("Win horizontal");
 									win(panels);
 									break;
 								}
@@ -151,7 +151,7 @@ public class ConnectFour {
 							if (currentCell.piece == piece) {
 								panels.add(currentCell);
 								if (i == 3) {
-									//System.out.println("Won right diagonal");
+									// System.out.println("Won right diagonal");
 									win(panels);
 									break;
 								}
@@ -168,7 +168,7 @@ public class ConnectFour {
 							if (currentCell.piece == piece) {
 								panels.add(currentCell);
 								if (i == 3) {
-									//System.out.println("Won left diagonal");
+									// System.out.println("Won left diagonal");
 									win(panels);
 									break;
 								}
@@ -185,35 +185,35 @@ public class ConnectFour {
 	private void win(ArrayList<CellPanel> panels) {
 		playing = false;
 		Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask() {
-			boolean color = false;
-			public void run() {
-				for (CellPanel panel : panels) {
-					if (color) {
-						panel.setBackground(Color.YELLOW);
-					} else {
-						switch (currentPlayer) {
-						case 1:
-							panel.setBackground(Color.RED);
-							break;
-						case 2:
-							panel.setBackground(Color.BLACK);
-							break;
+		if (panels != null) {
+			t.scheduleAtFixedRate(new TimerTask() {
+				boolean color = false;
+				public void run() {
+					for (CellPanel panel : panels) {
+						if (color) {
+							panel.setBackground(Color.YELLOW);
+						} else {
+							switch (currentPlayer) {
+							case 1:
+								panel.setBackground(Color.RED);
+								break;
+							case 2:
+								panel.setBackground(Color.BLACK);
+								break;
+							}
 						}
 					}
+					color = !color;
 				}
-				color = !color;
-			}
-		}, 0, 20*5);
-
+			}, 0, 20 * 5);
+		} else System.out.println("Panels array was null!");
 		frame.getScoreboard().setBackground(Color.YELLOW);
 		frame.getScoreboard().getLabel().setText("Player " + currentPlayer + " has won!");
 		frame.getScoreboard().togglePlayAgainButton();
-		//System.out.println("Player has won!");
 	}
 
 	private void switchPlayer() {
-		if(playing) {
+		if (playing) {
 			if (currentPlayer == 1)
 				currentPlayer = 2;
 			else

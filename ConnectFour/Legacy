@@ -1,0 +1,35 @@
+Possible future check diagonal method
+
+private void checkDiagonal() {
+		for (int row = 5; row >= 3; row--) {
+			for (int column = 0; column <= 6; column++) {
+				CellPanel cell = frame.getConnectFourPanel().getPanel(column, row);
+				if (!cell.isEmpty()) {
+					int piece = cell.piece;
+					ArrayList<CellPanel> panels = new ArrayList<CellPanel>();
+					panels.add(cell);
+					for (int i = 1; i <= 3; i++) {
+						CellPanel currentCell = frame.getConnectFourPanel().getPanel(column + i, row - i);
+						if (currentCell != null && currentCell.piece == piece) {
+							panels.add(currentCell);
+							if (i == 3) {
+								win(panels);
+								break;
+							}
+						} else break;
+					}
+					panels.clear();
+					for (int i = 1; i <= 3; i++) {
+						CellPanel currentCell = frame.getConnectFourPanel().getPanel(column - i, row - i);
+						if (currentCell != null && currentCell.piece == piece) {
+							panels.add(currentCell);
+							if (i == 3) {
+								win(panels);
+								break;
+							}
+						} else break;
+					}
+				}
+			}
+		}
+	}
